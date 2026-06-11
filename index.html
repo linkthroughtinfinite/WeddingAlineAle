@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casamento Aline & Alexandre</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--coral:#E07A5F;--peach:#F2A682;--gold:#C9A96E;--dark:#3A2E2A;--cream:#FDF8F4;--blush:#F5E6DC}
+body{background:#e8ddd4;font-family:'Montserrat',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.card{background:var(--cream);max-width:520px;width:100%;position:relative;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.18),0 10px 30px rgba(0,0,0,.1);animation:fadeUp 1.2s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+.floral-top{position:absolute;top:-10px;right:-10px;width:260px;pointer-events:none;z-index:2}
+.floral-bottom-left{position:absolute;bottom:60px;left:-10px;width:230px;pointer-events:none;z-index:2;transform:scaleX(-1)}
+.floral-bottom-right{position:absolute;bottom:-10px;right:-10px;width:200px;pointer-events:none;z-index:2}
+.content{position:relative;z-index:3;text-align:center;padding:70px 50px 50px}
+.tagline{font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:28px;line-height:1.8;font-weight:500;animation:fadeUp 1.4s ease both}
+.names{margin-bottom:20px;animation:fadeUp 1.5s ease both}
+.name-script{font-family:'Great Vibes',cursive;font-size:72px;color:var(--dark);line-height:1;display:block}
+.name-and{font-family:'Great Vibes',cursive;font-size:36px;color:var(--gold);display:block;margin:4px 0}
+.invite-text{font-size:10px;letter-spacing:2.5px;color:#9A8880;text-transform:uppercase;line-height:1.8;margin-bottom:28px;animation:fadeUp 1.6s ease both}
+.divider{display:flex;align-items:center;justify-content:center;gap:12px;margin:22px auto;animation:fadeUp 1.7s ease both}
+.divider-line{width:60px;height:1px;background:linear-gradient(to right,transparent,var(--gold))}
+.divider-line.rev{background:linear-gradient(to left,transparent,var(--gold))}
+.divider-heart{color:var(--gold);font-size:12px}
+.details-row{display:flex;justify-content:center;align-items:center;margin-bottom:28px;animation:fadeUp 1.8s ease both}
+.detail-block{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 20px}
+.detail-block+.detail-block{border-left:1px solid #ddd}
+.detail-icon{width:28px;height:28px;color:var(--coral)}
+.detail-label{font-size:16px;letter-spacing:1px;color:var(--dark);font-weight:400}
+.location-block{animation:fadeUp 1.9s ease both;margin-bottom:30px}
+.venue-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--dark);letter-spacing:1px}
+.venue-address{font-size:11px;color:#9A8880;line-height:1.7;letter-spacing:.5px;margin-top:4px}
+.hearts-row{display:flex;justify-content:center;gap:6px;margin-bottom:30px;animation:fadeUp 2s ease both}
+.hearts-row span{color:var(--coral);font-size:10px}
+.confirm-btn{display:inline-block;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'Montserrat',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:13px 36px;cursor:pointer;transition:all .35s ease;animation:fadeUp 2.1s ease both}
+.confirm-btn:hover{background:var(--gold);color:var(--cream)}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--cream);padding:40px 36px;max-width:380px;width:100%;text-align:center;position:relative;animation:fadeUp .4s ease both}
+.modal-close{position:absolute;top:14px;right:18px;font-size:20px;color:#aaa;cursor:pointer;background:none;border:none}
+.modal h3{font-family:'Great Vibes',cursive;font-size:36px;color:var(--dark);margin-bottom:6px}
+.modal p{font-size:11px;color:#9A8880;letter-spacing:1px;margin-bottom:22px}
+.modal input,.modal select{width:100%;border:1px solid #ddd;background:white;padding:12px 14px;font-family:'Montserrat',sans-serif;font-size:12px;color:var(--dark);outline:none;margin-bottom:12px;transition:border .2s}
+.modal input:focus,.modal select:focus{border-color:var(--gold)}
+.modal-submit{width:100%;background:var(--coral);border:none;color:white;font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:14px;cursor:pointer;transition:background .3s;margin-top:4px}
+.modal-submit:hover{background:#c96a50}
+.success-msg{display:none;color:var(--gold);font-size:13px;letter-spacing:1px;margin-top:14px}
+.bg-petals{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
+.petal{position:absolute;border-radius:60% 40% 60% 40%;opacity:.06;background:var(--peach)}
+.petal:nth-child(1){width:180px;height:120px;top:-30px;left:-40px;transform:rotate(30deg)}
+.petal:nth-child(2){width:140px;height:90px;bottom:200px;right:-30px;transform:rotate(-20deg)}
+.petal:nth-child(3){width:100px;height:70px;bottom:100px;left:10px;transform:rotate(50deg)}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="bg-petals"><div class="petal"></div><div class="petal"></div><div class="petal"></div></div>
+
+  <svg class="floral-top" viewBox="0 0 260 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="195" cy="45" r="38" fill="#E5846A" opacity=".75"/><circle cx="195" cy="45" r="26" fill="#F2A682" opacity=".7"/><circle cx="195" cy="45" r="14" fill="#C96B52" opacity=".65"/>
+    <ellipse cx="157" cy="58" rx="32" ry="26" fill="#E8896F" opacity=".7" transform="rotate(-20 157 58)"/>
+    <ellipse cx="218" cy="88" rx="28" ry="22" fill="#F09070" opacity=".65" transform="rotate(15 218 88)"/>
+    <circle cx="230" cy="130" r="28" fill="#E07A5F" opacity=".7"/><circle cx="230" cy="130" r="18" fill="#F2A070" opacity=".65"/><circle cx="230" cy="130" r="9" fill="#C96B52" opacity=".6"/>
+    <ellipse cx="202" cy="168" rx="16" ry="12" fill="#E8896F" opacity=".6" transform="rotate(10 202 168)"/>
+    <path d="M160 80 Q130 120 100 160" stroke="#A89060" stroke-width="2" fill="none" opacity=".6"/>
+    <path d="M170 95 Q150 130 140 170" stroke="#A89060" stroke-width="1.5" fill="none" opacity=".5"/>
+    <ellipse cx="140" cy="115" rx="20" ry="10" fill="#B8A065" opacity=".55" transform="rotate(-35 140 115)"/>
+    <ellipse cx="125" cy="140" rx="18" ry="9" fill="#C0AA72" opacity=".5" transform="rotate(-50 125 140)"/>
+    <ellipse cx="155" cy="150" rx="16" ry="8" fill="#A89060" opacity=".5" transform="rotate(20 155 150)"/>
+    <ellipse cx="108" cy="160" rx="22" ry="10" fill="#B5A060" opacity=".5" transform="rotate(-30 108 160)"/>
+    <ellipse cx="170" cy="175" rx="14" ry="7" fill="#C0AA72" opacity=".45" transform="rotate(40 170 175)"/>
+  </svg>
+
+  <svg class="floral-bottom-left" viewBox="0 0 230 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="95" cy="220" r="45" fill="#E07A5F" opacity=".75"/><circle cx="95" cy="220" r="30" fill="#F2A080" opacity=".7"/><circle cx="95" cy="220" r="16" fill="#C96B52" opacity=".65"/>
+    <ellipse cx="52" cy="208" rx="30" ry="24" fill="#E8896F" opacity=".65" transform="rotate(-15 52 208)"/>
+    <ellipse cx="135" cy="205" rx="28" ry="22" fill="#EE9070" opacity=".6" transform="rotate(20 135 205)"/>
+    <circle cx="60" cy="140" r="28" fill="#E07A5F" opacity=".65"/><circle cx="60" cy="140" r="18" fill="#F2A080" opacity=".6"/><circle cx="60" cy="140" r="9" fill="#C96B52" opacity=".55"/>
+    <ellipse cx="28" cy="95" rx="12" ry="16" fill="#E8A070" opacity=".6" transform="rotate(-5 28 95)"/>
+    <ellipse cx="45" cy="60" rx="10" ry="14" fill="#EE9070" opacity=".55" transform="rotate(5 45 60)"/>
+    <path d="M75 160 Q55 120 40 70" stroke="#A89060" stroke-width="2" fill="none" opacity=".55"/>
+    <path d="M90 180 Q100 140 95 90" stroke="#A89060" stroke-width="1.5" fill="none" opacity=".45"/>
+    <ellipse cx="65" cy="105" rx="20" ry="9" fill="#B5A060" opacity=".55" transform="rotate(40 65 105)"/>
+    <ellipse cx="50" cy="130" rx="18" ry="8" fill="#C0AA72" opacity=".5" transform="rotate(-30 50 130)"/>
+    <ellipse cx="90" cy="120" rx="22" ry="10" fill="#A89060" opacity=".5" transform="rotate(10 90 120)"/>
+  </svg>
+
+  <svg class="floral-bottom-right" viewBox="0 0 200 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="140" cy="130" r="38" fill="#E07A5F" opacity=".7"/><circle cx="140" cy="130" r="25" fill="#F2A080" opacity=".65"/><circle cx="140" cy="130" r="13" fill="#C96B52" opacity=".6"/>
+    <ellipse cx="105" cy="120" rx="28" ry="22" fill="#E8896F" opacity=".6" transform="rotate(-10 105 120)"/>
+    <ellipse cx="160" cy="160" rx="22" ry="16" fill="#EE9070" opacity=".55" transform="rotate(20 160 160)"/>
+    <ellipse cx="60" cy="140" rx="14" ry="9" fill="#B5A060" opacity=".5" transform="rotate(-20 60 140)"/>
+    <ellipse cx="90" cy="155" rx="18" ry="8" fill="#C0AA72" opacity=".45" transform="rotate(10 90 155)"/>
+    <path d="M120 120 Q90 100 60 140" stroke="#A89060" stroke-width="1.5" fill="none" opacity=".5"/>
+  </svg>
+
+  <div class="content">
+    <p class="tagline">Juntamente<br>com suas famílias</p>
+    <div class="names">
+      <span class="name-script">Aline</span>
+      <span class="name-and">e</span>
+      <span class="name-script">Alexandre</span>
+    </div>
+    <p class="invite-text">Convidam para celebrar<br>o seu casamento</p>
+    <div class="divider"><div class="divider-line"></div><span class="divider-heart">♥</span><div class="divider-line rev"></div></div>
+    <div class="details-row">
+      <div class="detail-block">
+        <svg class="detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+        <span class="detail-label">15/08/2026</span>
+      </div>
+      <div class="detail-block">
+        <svg class="detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <span class="detail-label">às 16h</span>
+      </div>
+    </div>
+    <div class="divider"><div class="divider-line"></div><span class="divider-heart">♥</span><div class="divider-line rev"></div></div>
+    <div class="location-block">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:24px;height:24px;color:#E07A5F;display:block;margin:0 auto 6px"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      <div class="venue-name">Mansão Mabel</div>
+      <div class="venue-address">St. Hab. Vicente Pires 154/2, lote 21<br>Brasília – DF</div>
+    </div>
+    <div class="hearts-row"><span>♥</span><span>♥</span><span>♥</span></div>
+    <button class="confirm-btn" onclick="document.getElementById('rsvpModal').classList.add('open')">Confirmar presença</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="rsvpModal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('rsvpModal').classList.remove('open')">✕</button>
+    <h3>Confirmar Presença</h3>
+    <p>Aline & Alexandre — 15.08.2026</p>
+    <input type="text" placeholder="Seu nome completo" id="guestName"/>
+    <input type="text" placeholder="Telefone / WhatsApp" id="guestPhone"/>
+    <select id="guestCount">
+      <option value="" disabled selected>Número de acompanhantes</option>
+      <option>Virei sozinho(a)</option>
+      <option>+ 1 acompanhante</option>
+      <option>+ 2 acompanhantes</option>
+      <option>+ 3 acompanhantes</option>
+    </select>
+    <button class="modal-submit" onclick="handleRSVP()">Confirmar ♥</button>
+    <div class="success-msg" id="successMsg">Presença confirmada com amor! ♥<br>Até o grande dia!</div>
+  </div>
+</div>
+
+<script>
+function handleRSVP() {
+  const name = document.getElementById('guestName').value.trim();
+  const phone = document.getElementById('guestPhone').value.trim();
+  const count = document.getElementById('guestCount').value;
+  if (!name) { document.getElementById('guestName').style.borderColor='#E07A5F'; return; }
+  const msg =
+    '💍 *Confirmação de Presença*\n\n' +
+    'Olá! Estou confirmando minha presença no casamento de *Aline & Alexandre* 🌸\n\n' +
+    '👤 *Nome:* ' + name + '\n' +
+    '📱 *Telefone:* ' + (phone||'—') + '\n' +
+    '👥 *Acompanhantes:* ' + (count||'—') + '\n\n' +
+    '📅 15 de agosto de 2026 às 16h\n' +
+    '📍 Mansão Mabel — Brasília/DF';
+  window.open('https://wa.me/5561984437997?text=' + encodeURIComponent(msg), '_blank');
+  document.getElementById('successMsg').style.display = 'block';
+  document.querySelector('.modal-submit').style.display = 'none';
+}
+</script>
+</body>
+</html>
