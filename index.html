@@ -26,16 +26,22 @@
 
     /* ── Music player ── */
     #music-player{
-      position:fixed;bottom:18px;right:18px;z-index:200;
+      position:fixed;bottom:20px;right:16px;z-index:500;
       display:flex;align-items:center;gap:10px;
-      background:rgba(248,245,241,.94);
-      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-      border:1px solid rgba(154,122,68,.3);
-      border-radius:50px;padding:9px 16px 9px 12px;
-      box-shadow:0 4px 20px rgba(42,30,26,.12);cursor:pointer;
-      transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
+      background:rgba(248,245,241,.97);
+      backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+      border:1px solid rgba(154,122,68,.35);
+      border-radius:50px;padding:11px 18px 11px 14px;
+      box-shadow:0 4px 24px rgba(42,30,26,.18);
+      cursor:pointer;
+      /* Large tap target */
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+      user-select:none;-webkit-user-select:none;
+      transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;
     }
-    #music-player:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(42,30,26,.16);}
+    #music-player:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(42,30,26,.2);}
+    #music-player:active{transform:scale(.96);}
     .music-bars{display:flex;align-items:flex-end;gap:2px;height:14px;}
     .music-bars span{display:block;width:2px;background:#c9735f;border-radius:2px;animation:barAnim .9s ease-in-out infinite;}
     .music-bars span:nth-child(1){height:5px;animation-delay:0s;}
@@ -48,9 +54,9 @@
     .music-info{display:flex;flex-direction:column;gap:1px;}
     .music-title{font-family:'Montserrat',sans-serif;font-size:.55rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#2a1e1a;}
     .music-sub{font-family:'Cormorant Garamond',serif;font-size:.72rem;font-style:italic;font-weight:300;color:#6b4f44;}
-    .play-icon{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#c9735f,#a05040);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s;}
-    #music-player:hover .play-icon{transform:scale(1.1);}
-    .play-icon svg{width:10px;height:10px;fill:#fff;margin-left:1px;}
+    .play-icon{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#c9735f,#a05040);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s;box-shadow:0 2px 8px rgba(201,115,95,.4);}
+    #music-player:hover .play-icon{transform:scale(1.08);}
+    .play-icon svg{width:13px;height:13px;fill:#fff;margin-left:2px;}
 
     /* ══ INVITE CARD ══ */
     #invite{
@@ -431,69 +437,73 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 
 /* Music — HTML5 Audio */
 (function(){
-  const player  = document.getElementById('music-player');
-  const bars    = document.getElementById('musicBars');
-  const sub     = document.getElementById('musicSub');
-  const playIcon= document.getElementById('playIcon');
-  const audio   = document.getElementById('weddingAudio');
+  const player   = document.getElementById('music-player');
+  const bars     = document.getElementById('musicBars');
+  const sub      = document.getElementById('musicSub');
+  const playIcon = document.getElementById('playIcon');
+  const audio    = document.getElementById('weddingAudio');
   if(!player || !audio) return;
 
-  let playing = false;
+  let playing  = false;
+  let gestured = false;
 
   function setPlaying(v){
     playing = v;
     bars.classList.toggle('paused', !v);
     sub.textContent = v ? 'Nossa música ♪' : 'Toque para ouvir ♪';
     playIcon.innerHTML = v
-      ? '<svg viewBox="0 0 10 12"><rect x="1" y="1" width="3" height="10" rx="1" fill="#fff"/><rect x="6" y="1" width="3" height="10" rx="1" fill="#fff"/></svg>'
-      : '<svg viewBox="0 0 10 12"><path d="M1 1l8 5-8 5z" fill="#fff"/></svg>';
+      ? '<svg viewBox="0 0 12 14" aria-hidden="true"><rect x="1" y="1" width="3.5" height="12" rx="1.2" fill="#fff"/><rect x="7.5" y="1" width="3.5" height="12" rx="1.2" fill="#fff"/></svg>'
+      : '<svg viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#fff"/></svg>';
+  }
+
+  /* Fade volume in */
+  function fadeIn(){
+    audio.volume = 0;
+    let v = 0;
+    const t = setInterval(()=>{
+      v = Math.min(v + 0.05, 0.75);
+      audio.volume = v;
+      if(v >= 0.75) clearInterval(t);
+    }, 60);
   }
 
   function tryPlay(){
-    audio.volume = 0.72;
     const p = audio.play();
     if(p !== undefined){
-      p.then(()=> setPlaying(true)).catch(()=> setPlaying(false));
+      p.then(()=>{ setPlaying(true); fadeIn(); })
+       .catch(()=>{ setPlaying(false); });
+    } else {
+      setPlaying(true); fadeIn();
     }
   }
 
   function tryStop(){
     audio.pause();
-    audio.currentTime = 0;
     setPlaying(false);
   }
 
-  /* Toggle on player click */
-  player.addEventListener('click', e=>{
+  /* Player button — touchend for instant mobile response */
+  function onPlayerTap(e){
+    e.preventDefault();
     e.stopPropagation();
+    gestured = true;
     playing ? tryStop() : tryPlay();
-  });
+  }
+  player.addEventListener('touchend', onPlayerTap, {passive:false});
+  player.addEventListener('click',    onPlayerTap);
 
-  /* Auto-start on first user gesture (required by all mobile browsers) */
-  let gestured = false;
-  function firstGesture(){
+  /* First gesture anywhere else on page → start music */
+  function firstGesture(e){
     if(gestured) return;
+    if(player.contains(e.target)) return; /* player handles itself */
     gestured = true;
     tryPlay();
   }
-  document.addEventListener('click',     firstGesture, {once:true, passive:true});
-  document.addEventListener('touchstart',firstGesture, {once:true, passive:true});
+  document.addEventListener('touchend', firstGesture, {passive:true});
+  document.addEventListener('click',    firstGesture, {passive:true});
 
-  /* Try autoplay on desktop (may work without gesture) */
-  window.addEventListener('load', ()=>{
-    setTimeout(()=>{ tryPlay(); }, 800);
-  });
-
-  /* Fade in volume smoothly */
-  audio.addEventListener('play', ()=>{
-    audio.volume = 0;
-    let vol = 0;
-    const fade = setInterval(()=>{
-      vol = Math.min(vol + 0.04, 0.72);
-      audio.volume = vol;
-      if(vol >= 0.72) clearInterval(fade);
-    }, 80);
-  });
+  /* Desktop autoplay */
+  window.addEventListener('load', ()=>{ setTimeout(tryPlay, 900); });
 
   setPlaying(false);
 })();
